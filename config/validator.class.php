@@ -22,32 +22,27 @@ class Validator
             return false;
         }
     }
-    public function validateImage($file, $value, $path, $max_width, $max_heigth)
+    public function validateImage($file, $value, $path)
     {
         if ($file['size'] <= 1073741824) {
             list($width, $height, $type) = getimagesize($file['tmp_name']);
-            if ($width <= $max_width && $height <= $max_heigth) {
-                if ($type == 1 || $type == 2 || $type == 3) {
-                    if ($value) {
-                        $image = $value;
-                    } else {
-                        $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-                        $image     = uniqid() . "." . $extension;
-                    }
-                    $url = $path . $image;
-                    if (move_uploaded_file($file['tmp_name'], $url)) {
-                        $this->imageName = $image;
-                        return true;
-                    } else {
-                        $this->imageError = 1;
-                        return false;
-                    }
+            if ($type == 1 || $type == 2 || $type == 3) {
+                if ($value) {
+                    $image = $value;
                 } else {
-                    $this->imageError = 2;
+                    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                    $image     = uniqid() . "." . $extension;
+                }
+                $url = $path . $image;
+                if (move_uploaded_file($file['tmp_name'], $url)) {
+                    $this->imageName = $image;
+                    return true;
+                } else {
+                    $this->imageError = 1;
                     return false;
                 }
             } else {
-                $this->imageError = 3;
+                $this->imageError = 2;
                 return false;
             }
         } else {

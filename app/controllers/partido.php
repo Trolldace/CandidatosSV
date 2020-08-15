@@ -8,10 +8,14 @@ try {
         switch ($_POST['accion']) {
             case 'create':
                 if ($partido->setPartido($_POST['partido'])) {
-                    if ($partido->create()) {
-                        echo json_encode(true);
+                    if ($partido->setLogo($_FILES['logo'])) {
+                        if ($partido->create()) {
+                            echo json_encode(true);
+                        } else {
+                            throw new Exception("No se pudo crear el partido politico");
+                        }
                     } else {
-                        throw new Exception("No se pudo crear el partido politico");
+                        throw new Exception('Verifique la imagen ingresada');
                     }
                 } else {
                     throw new Exception("Verifique el partido politico");
@@ -20,10 +24,14 @@ try {
             case 'update':
                 if ($partido->setIdPartido($_POST['id_partido'])) {
                     if ($partido->setPartido($_POST['partido'])) {
-                        if ($partido->create()) {
-                            echo json_encode(true);
+                        if ($partido->setLogo($_FILES['logo'])) {
+                            if ($partido->update()) {
+                                echo json_encode(true);
+                            } else {
+                                throw new Exception("No se pudo modificar el partido politico");
+                            }
                         } else {
-                            throw new Exception("No se pudo modificar el partido politico");
+                            throw new Exception('Verifique la imagen ingresada');
                         }
                     } else {
                         throw new Exception("Verifique el partido politico");
@@ -59,4 +67,3 @@ try {
 } catch (Exception $error) {
     echo json_encode($error->getMessage());
 }
-?>

@@ -3,6 +3,7 @@ class Red extends Validator
 {
     private $id_red = null;
     private $red = null;
+    private $logo = null;
 
     public function setIdRed($value)
     {
@@ -23,17 +24,26 @@ class Red extends Validator
             return false;
         }
     }
+    public function setLogo($file_name)
+    {
+        if ($this->validateImage($file_name, $this->logo, '../../../web/media/img/red/')) {
+            $this->logo = $this->imageName;
+            return true;
+        } else {
+            return false;
+        }
+    }
     //FUNCIONES CRUD
     public function create()
     {
         $sql = "INSERT INTO red(red,logo,estado) VALUES (?,?,1)";
-        $params = array($this->red);
+        $params = array($this->red, $this->logo);
         return Database::executeRow($sql, $params);
     }
     public function update()
     {
         $sql = "UPDATE red SET red = ?, logo=? WHERE id_red=?";
-        $params = array($this->red, $this->id_red);
+        $params = array($this->red, $this->logo, $this->id_red);
         return Database::executeRow($sql, $params);
     }
     public function delete()
@@ -55,5 +65,3 @@ class Red extends Validator
         return Database::getRow($sql, $params);
     }
 }
-
-?>

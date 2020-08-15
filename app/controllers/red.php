@@ -8,10 +8,14 @@ try {
         switch ($_POST['accion']) {
             case 'create':
                 if ($red->setRed($_POST['red'])) {
-                    if ($red->create()) {
-                        echo json_encode(true);
+                    if ($red->setLogo($_FILES['logo'])) {
+                        if ($red->create()) {
+                            echo json_encode(true);
+                        } else {
+                            throw new Exception("No se pudo crear la red social");
+                        }
                     } else {
-                        throw new Exception("No se pudo crear la red social");
+                        throw new Exception('Verifique el logo');
                     }
                 } else {
                     throw new Exception("Verifique la red social");
@@ -20,10 +24,14 @@ try {
             case 'update':
                 if ($red->setIdRed($_POST['id_red'])) {
                     if ($red->setRed($_POST['red'])) {
-                        if ($red->create()) {
-                            echo json_encode(true);
+                        if ($red->setLogo($_FILES['logo'])) {
+                            if ($red->update()) {
+                                echo json_encode(true);
+                            } else {
+                                throw new Exception("No se pudo modificar la red social");
+                            }
                         } else {
-                            throw new Exception("No se pudo modificar la red social");
+                            throw new Exception('Verifique el logo');
                         }
                     } else {
                         throw new Exception("Verifique la red social");
@@ -59,4 +67,3 @@ try {
 } catch (Exception $error) {
     echo json_encode($error->getMessage());
 }
-?>

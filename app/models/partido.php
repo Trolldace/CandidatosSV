@@ -3,6 +3,7 @@ class Partido extends Validator
 {
     private $id_partido = null;
     private $partido = null;
+    private $logo = null;
 
     public function setIdPartido($value)
     {
@@ -13,7 +14,6 @@ class Partido extends Validator
             return false;
         }
     }
-
     public function setPartido($value)
     {
         if ($this->validateAlphabetic($value, 1, 255)) {
@@ -23,17 +23,26 @@ class Partido extends Validator
             return false;
         }
     }
+    public function setLogo($file_name)
+    {
+        if ($this->validateImage($file_name, $this->logo, '../../../web/media/img/partido/')) {
+            $this->logo = $this->imageName;
+            return true;
+        } else {
+            return false;
+        }
+    }
     //FUNCIONES CRUD
     public function create()
     {
         $sql = "INSERT INTO partido(partido,logo,estado) VALUES (?,?,1)";
-        $params = array($this->partido);
+        $params = array($this->partido, $this->logo);
         return Database::executeRow($sql, $params);
     }
     public function update()
     {
         $sql = "UPDATE partido SET partido = ?, logo=? WHERE id_partido=?";
-        $params = array($this->partido, $this->id_partido);
+        $params = array($this->partido, $this->logo, $this->id_partido);
         return Database::executeRow($sql, $params);
     }
     public function delete()
@@ -55,5 +64,3 @@ class Partido extends Validator
         return Database::getRow($sql, $params);
     }
 }
-
-?>

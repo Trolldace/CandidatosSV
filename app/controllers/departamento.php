@@ -20,7 +20,7 @@ try {
             case 'update':
                 if ($departamento->setIdDepartamento($_POST['id_departamento'])) {
                     if ($departamento->setDepartamento($_POST['departamento'])) {
-                        if ($departamento->create()) {
+                        if ($departamento->update()) {
                             echo json_encode(true);
                         } else {
                             throw new Exception("No se pudo modificar el departamento");
