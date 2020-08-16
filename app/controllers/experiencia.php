@@ -7,26 +7,40 @@ try {
     if (isset($_POST['accion'])) {
         switch ($_POST['accion']) {
             case 'create':
-                if ($experiencia->setExperiencia($_POST['experiencia'])) {
-                    if ($experiencia->create()) {
-                        echo json_encode(true);
-                    } else {
-                        throw new Exception("No se pudo crear la experiencia del candidato");
+                if ($experiencia->setIdCandidato($_POST['id_candidato'])) {
+                    if ($experiencia->setDesde($_POST['desde'])) {
+                        if ($experiencia->setHasta($_POST['hasta'])) {
+                            if ($experiencia->setInstitucion($_POST['institucion'])) {
+                                if ($experiencia->setCargo($_POST['cargo'])) {
+                                    if ($experiencia->setFuncion($_POST['funcion'])) {
+                                        if ($experiencia->create()) {
+                                            echo json_encode(true);
+                                        } else {
+                                            throw new Exception(Database::getException());
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                } else {
-                    throw new Exception("Verifique la experiencia del candidato");
                 }
                 break;
             case 'update':
                 if ($experiencia->setIdExperiencia($_POST['id_experiencia'])) {
-                    if ($experiencia->setExperiencia($_POST['experiencia'])) {
-                        if ($experiencia->create()) {
-                            echo json_encode(true);
-                        } else {
-                            throw new Exception("No se pudo modificar la experiencia del candidato");
+                    if ($experiencia->setDesde($_POST['desde'])) {
+                        if ($experiencia->setHasta($_POST['hasta'])) {
+                            if ($experiencia->setInstitucion($_POST['institucion'])) {
+                                if ($experiencia->setCargo($_POST['cargo'])) {
+                                    if ($experiencia->setFuncion($_POST['funcion'])) {
+                                        if ($experiencia->update()) {
+                                            echo json_encode(true);
+                                        } else {
+                                            throw new Exception(Database::getException());
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    } else {
-                        throw new Exception("Verifique la experiencia del candidato");
                     }
                 } else {
                     throw new Exception('No se ha encontrado la experiencia del candidato');
@@ -44,7 +58,9 @@ try {
                 }
                 break;
             case 'all':
-                $data = $experiencia->all();
+                if ($experiencia->setIdCandidato($_POST['id_candidato'])) {
+                    $data = $experiencia->all();
+                }
                 echo json_encode($data);
                 break;
             case 'one':
@@ -59,4 +75,3 @@ try {
 } catch (Exception $error) {
     echo json_encode($error->getMessage());
 }
-?>

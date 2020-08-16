@@ -38,7 +38,7 @@ class Candidato extends Validator
     }
     public function setFoto($file_name)
     {
-        if ($this->validateImage($file_name, $this->foto, '../../../web/media/img/candidato/')) {
+        if ($this->validateImage($file_name, $this->foto, '../../web/media/img/candidato/')) {
             $this->foto = $this->imageName;
             return true;
         } else {
@@ -69,7 +69,7 @@ class Candidato extends Validator
         return true;
     }
 
-    public function crear()
+    public function create()
     {
         $sql = "INSERT INTO candidato(nombre,apellido,foto,id_departamento,id_partido,perfil_profesional) VALUES(?,?,?,?,?,?)";
         $params = array($this->nombre, $this->apellido, $this->foto, $this->id_departamento, $this->id_partido, $this->perfil_profesional);

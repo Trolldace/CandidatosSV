@@ -20,7 +20,7 @@ try {
             case 'update':
                 if ($titulo->setIdTitulo($_POST['id_titulo'])) {
                     if ($titulo->setTitulo($_POST['titulo'])) {
-                        if ($titulo->create()) {
+                        if ($titulo->update()) {
                             echo json_encode(true);
                         } else {
                             throw new Exception("No se pudo modificar el titulo");
@@ -59,4 +59,3 @@ try {
 } catch (Exception $error) {
     echo json_encode($error->getMessage());
 }
-?>

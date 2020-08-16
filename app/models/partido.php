@@ -25,7 +25,7 @@ class Partido extends Validator
     }
     public function setLogo($file_name)
     {
-        if ($this->validateImage($file_name, $this->logo, '../../../web/media/img/partido/')) {
+        if ($this->validateImage($file_name, $this->logo, '../../web/media/img/partido/')) {
             $this->logo = $this->imageName;
             return true;
         } else {
